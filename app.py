@@ -73,6 +73,7 @@ def japan_top_tracks(limit=50):
             })
         return pd.DataFrame(rows)
     except Exception as e:
+        st.warning(f"Japan Top Tracks 取得エラー: {e}")
         return pd.DataFrame()
 
 
@@ -268,6 +269,12 @@ st.markdown("""
 with st.sidebar:
     st.markdown("## 🎌 J-Music Hub")
     st.markdown("---")
+
+    api_key = get_api_key()
+    if not api_key:
+        st.error("APIキーが未設定です\nStreamlit Cloud → Settings → Secrets に\n`LASTFM_API_KEY = \"your_key\"` を追加してください")
+        st.stop()
+    st.success("Last.fm 接続済み ✓")
 
     pages = {
         "charts":  "📊 Japan Charts",
