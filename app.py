@@ -86,11 +86,12 @@ def japan_top_artists(limit=50):
             rows.append({
                 "rank": i,
                 "artist": a.get("name", ""),
-                "listeners": int(a.get("listeners", 0)),
+                "listeners": int(a.get("listeners", 0) or 0),
                 "url": a.get("url", ""),
             })
         return pd.DataFrame(rows)
-    except Exception:
+    except Exception as e:
+        st.warning(f"Japan Top Artists 取得エラー: {e}")
         return pd.DataFrame()
 
 
@@ -123,7 +124,8 @@ def genre_top_artists(tag, limit=30):
                 "url": a.get("url", ""),
             })
         return pd.DataFrame(rows)
-    except Exception:
+    except Exception as e:
+        st.warning(f"Genre Top Artists 取得エラー: {e}")
         return pd.DataFrame()
 
 
@@ -307,6 +309,7 @@ with st.sidebar:
 
     if st.button("🔄 キャッシュクリア"):
         st.cache_data.clear()
+        st.cache_resource.clear()
         st.rerun()
 
 page = st.session_state.page
